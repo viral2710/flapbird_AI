@@ -155,18 +155,6 @@ class Base:
 		win.blit(self.IMG,(self.x1,self.y))
 		win.blit(self.IMG,(self.x2,self.y))
 
-def draw_window(win, bird, pipes, base, score):
-	win.blit(BG_IMG, (0,0))
-	for pipe in pipes:
-		pipe.draw(win)
-	base.draw(win)
-
-	text = STAT_FONT.render("Score: "+str(score),1,(255,255,255))
-	win.blit(text,(WIN_WIDTH-10-text.get_width(),10))
-
-
-	bird.draw(win)
-	pygame.display.update()
 
 def draw_windows(win, birds, pipes,gen, base, score):
 	win.blit(BG_IMG, (0,0))
@@ -189,53 +177,6 @@ def draw_windows(win, birds, pipes,gen, base, score):
 
 	pygame.display.update()
 
-def player():
-	bird=Bird(230,350)
-	base=Base(730)
-	pipes=[Pipe(600)]
-	win=pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
-	run=True
-	clock =pygame.time.Clock()
-	score =0
-	while run:
-		clock.tick(30)
-		for event in pygame.event.get():
-			if(event.type==pygame.QUIT):
-				run=False
-			if event.type==pygame.KEYDOWN:
-				if event.key==pygame.K_SPACE:
-					bird.jump()
-		bird.move()
-		rem=[]
-		add_pipe=False
-		for pipe in pipes:
-			if pipe.collide(bird):
-				run=False
-			if pipe.x+pipe.PIPE_TOP.get_width()<0:
-				rem.append(pipe)
-
-			if not pipe.passed and pipe.x<bird.x:
-				pipe.passed = True
-				add_pipe=True
-
-			pipe.move()
-
-		if add_pipe:
-			score+=1
-			pipes.append(Pipe(600))
-
-		for r in rem:
-			pipes.remove(r)
-
-		if bird.y + bird.img.get_height()>=730:
-			run=False
-
-		base.move()
-		draw_window(win,bird,pipes,base,score)
-	
-
-	pygame.quit()
-	quit()
 
 def eval_genomes(genomes, config):
 	global gen
