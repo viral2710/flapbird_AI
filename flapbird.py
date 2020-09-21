@@ -3,7 +3,6 @@ import neat
 import time
 import os
 import random
-import pickle
 
 pygame.font.init()
 
@@ -277,12 +276,9 @@ def run(config_file):
 	stats = neat.StatisticsReporter()
 	p.add_reporter(stats)
 	winner = p.run(eval_genomes, 50)
-	with open('best.pkl','wb') as p_f:
-		pickle.dump(winner,p_f)
-	with open('best.pkl','rb') as r_f:
-		best=pickle.load(r_f)
+	
 	print('\nBest genome:\n{!s}'.format(winner))
-	print('\nBest genome:\n{!s}'.format(best))
+	
 
 
 
